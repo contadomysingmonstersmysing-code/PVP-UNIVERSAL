@@ -1,0 +1,667 @@
+-- PVP | UNIVERSAL 🔫
+-- by: Sayzzz Scripts
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local userInputService = game:GetService("UserInputService")
+local runService = game:GetService("RunService")
+local camera = workspace.CurrentCamera
+
+-- Cria a ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "PVPUniversal"
+screenGui.Parent = player:WaitForChild("PlayerGui")
+screenGui.ResetOnSpawn = false
+
+-- Frame do menu (Roxo)
+local menuFrame = Instance.new("Frame")
+menuFrame.Size = UDim2.new(0, 340, 0, 370)
+menuFrame.Position = UDim2.new(0.5, -170, 0.1, 0)
+menuFrame.BackgroundColor3 = Color3.fromRGB(60, 20, 80) -- Roxo escuro
+menuFrame.BorderSizePixel = 0
+menuFrame.Active = true
+menuFrame.Draggable = true
+menuFrame.Parent = screenGui
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 10)
+corner.Parent = menuFrame
+
+-- Borda roxa mais clara
+local border = Instance.new("UIStroke")
+border.Color = Color3.fromRGB(120, 40, 160)
+border.Thickness = 2
+border.Parent = menuFrame
+
+-- Título
+local titleBar = Instance.new("Frame")
+titleBar.Size = UDim2.new(1, 0, 0, 35)
+titleBar.Position = UDim2.new(0, 0, 0, 0)
+titleBar.BackgroundColor3 = Color3.fromRGB(80, 30, 100)
+titleBar.BorderSizePixel = 0
+titleBar.Parent = menuFrame
+
+local titleCorner = Instance.new("UICorner")
+titleCorner.CornerRadius = UDim.new(0, 10)
+titleCorner.Parent = titleBar
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, -60, 0, 35)
+title.Position = UDim2.new(0, 0, 0, 0)
+title.Text = "🔥 PVP | UNIVERSAL 🔫"
+title.TextColor3 = Color3.fromRGB(255, 200, 255)
+title.BackgroundTransparency = 1
+title.Font = Enum.Font.SourceSansBold
+title.TextSize = 16
+title.Parent = titleBar
+
+-- Subtítulo do criador
+local creatorLabel = Instance.new("TextLabel")
+creatorLabel.Size = UDim2.new(1, -60, 0, 15)
+creatorLabel.Position = UDim2.new(0, 0, 0, 20)
+creatorLabel.Text = "by: Sayzzz Scripts"
+creatorLabel.TextColor3 = Color3.fromRGB(180, 130, 200)
+creatorLabel.BackgroundTransparency = 1
+creatorLabel.Font = Enum.Font.SourceSans
+creatorLabel.TextSize = 10
+creatorLabel.TextXAlignment = Enum.TextXAlignment.Right
+creatorLabel.Parent = titleBar
+
+local minimizeBtn = Instance.new("TextButton")
+minimizeBtn.Size = UDim2.new(0, 25, 0, 25)
+minimizeBtn.Position = UDim2.new(1, -55, 0, 5)
+minimizeBtn.Text = "─"
+minimizeBtn.TextColor3 = Color3.fromRGB(220, 180, 220)
+minimizeBtn.BackgroundTransparency = 1
+minimizeBtn.Font = Enum.Font.SourceSansBold
+minimizeBtn.TextSize = 18
+minimizeBtn.Parent = titleBar
+
+local closeBtn = Instance.new("TextButton")
+closeBtn.Size = UDim2.new(0, 25, 0, 25)
+closeBtn.Position = UDim2.new(1, -28, 0, 5)
+closeBtn.Text = "✕"
+closeBtn.TextColor3 = Color3.fromRGB(220, 180, 220)
+closeBtn.BackgroundTransparency = 1
+closeBtn.Font = Enum.Font.SourceSansBold
+closeBtn.TextSize = 14
+closeBtn.Parent = titleBar
+
+local contentContainer = Instance.new("Frame")
+contentContainer.Size = UDim2.new(1, 0, 1, -35)
+contentContainer.Position = UDim2.new(0, 0, 0, 35)
+contentContainer.BackgroundTransparency = 1
+contentContainer.Parent = menuFrame
+
+-- ESP Toggle
+local espToggle = Instance.new("TextButton")
+espToggle.Size = UDim2.new(0.9, 0, 0, 30)
+espToggle.Position = UDim2.new(0.05, 0, 0, 5)
+espToggle.Text = "❌ ESP: OFF"
+espToggle.TextColor3 = Color3.fromRGB(220, 220, 220)
+espToggle.BackgroundColor3 = Color3.fromRGB(50, 20, 65)
+espToggle.BorderSizePixel = 0
+espToggle.Font = Enum.Font.SourceSans
+espToggle.TextSize = 13
+espToggle.Parent = contentContainer
+local espCorner = Instance.new("UICorner")
+espCorner.CornerRadius = UDim.new(0, 4)
+espCorner.Parent = espToggle
+
+-- Hitbox Toggle
+local hitboxToggle = Instance.new("TextButton")
+hitboxToggle.Size = UDim2.new(0.9, 0, 0, 30)
+hitboxToggle.Position = UDim2.new(0.05, 0, 0, 42)
+hitboxToggle.Text = "🎯 Hitbox Expander: OFF"
+hitboxToggle.TextColor3 = Color3.fromRGB(220, 220, 220)
+hitboxToggle.BackgroundColor3 = Color3.fromRGB(50, 20, 65)
+hitboxToggle.BorderSizePixel = 0
+hitboxToggle.Font = Enum.Font.SourceSans
+hitboxToggle.TextSize = 13
+hitboxToggle.Parent = contentContainer
+local hitboxCorner = Instance.new("UICorner")
+hitboxCorner.CornerRadius = UDim.new(0, 4)
+hitboxCorner.Parent = hitboxToggle
+
+-- Seleção de cor do ESP (Highlight)
+local colorLabel = Instance.new("TextLabel")
+colorLabel.Size = UDim2.new(0.35, 0, 0, 25)
+colorLabel.Position = UDim2.new(0.05, 0, 0, 80)
+colorLabel.Text = "Cor ESP: 🔴"
+colorLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+colorLabel.BackgroundTransparency = 1
+colorLabel.Font = Enum.Font.SourceSans
+colorLabel.TextSize = 12
+colorLabel.Parent = contentContainer
+
+local colorBtn = Instance.new("TextButton")
+colorBtn.Size = UDim2.new(0.55, 0, 0, 25)
+colorBtn.Position = UDim2.new(0.42, 0, 0, 80)
+colorBtn.Text = "Mudar Cor"
+colorBtn.TextColor3 = Color3.fromRGB(220, 220, 220)
+colorBtn.BackgroundColor3 = Color3.fromRGB(50, 20, 65)
+colorBtn.BorderSizePixel = 0
+colorBtn.Font = Enum.Font.SourceSans
+colorBtn.TextSize = 12
+colorBtn.Parent = contentContainer
+local colorCorner = Instance.new("UICorner")
+colorCorner.CornerRadius = UDim.new(0, 4)
+colorCorner.Parent = colorBtn
+
+-- Slider para tamanho da cabeça
+local sizeLabel = Instance.new("TextLabel")
+sizeLabel.Size = UDim2.new(0.35, 0, 0, 25)
+sizeLabel.Position = UDim2.new(0.05, 0, 0, 115)
+sizeLabel.Text = "Tamanho: 1.0x"
+sizeLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+sizeLabel.BackgroundTransparency = 1
+sizeLabel.Font = Enum.Font.SourceSans
+sizeLabel.TextSize = 12
+sizeLabel.Parent = contentContainer
+
+local sizeSlider = Instance.new("TextButton")
+sizeSlider.Size = UDim2.new(0.25, 0, 0, 25)
+sizeSlider.Position = UDim2.new(0.45, 0, 0, 115)
+sizeSlider.Text = "➕"
+sizeSlider.TextColor3 = Color3.fromRGB(220, 220, 220)
+sizeSlider.BackgroundColor3 = Color3.fromRGB(50, 20, 65)
+sizeSlider.BorderSizePixel = 0
+sizeSlider.Font = Enum.Font.SourceSansBold
+sizeSlider.TextSize = 16
+sizeSlider.Parent = contentContainer
+local sizeCorner = Instance.new("UICorner")
+sizeCorner.CornerRadius = UDim.new(0, 4)
+sizeCorner.Parent = sizeSlider
+
+local sizeMinus = Instance.new("TextButton")
+sizeMinus.Size = UDim2.new(0.25, 0, 0, 25)
+sizeMinus.Position = UDim2.new(0.75, 0, 0, 115)
+sizeMinus.Text = "➖"
+sizeMinus.TextColor3 = Color3.fromRGB(220, 220, 220)
+sizeMinus.BackgroundColor3 = Color3.fromRGB(50, 20, 65)
+sizeMinus.BorderSizePixel = 0
+sizeMinus.Font = Enum.Font.SourceSansBold
+sizeMinus.TextSize = 16
+sizeMinus.Parent = contentContainer
+local sizeMinusCorner = Instance.new("UICorner")
+sizeMinusCorner.CornerRadius = UDim.new(0, 4)
+sizeMinusCorner.Parent = sizeMinus
+
+-- Slider para transparência da cabeça
+local transLabel = Instance.new("TextLabel")
+transLabel.Size = UDim2.new(0.35, 0, 0, 25)
+transLabel.Position = UDim2.new(0.05, 0, 0, 150)
+transLabel.Text = "Transparência: 0%"
+transLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+transLabel.BackgroundTransparency = 1
+transLabel.Font = Enum.Font.SourceSans
+transLabel.TextSize = 12
+transLabel.Parent = contentContainer
+
+local transSlider = Instance.new("TextButton")
+transSlider.Size = UDim2.new(0.25, 0, 0, 25)
+transSlider.Position = UDim2.new(0.45, 0, 0, 150)
+transSlider.Text = "➕"
+transSlider.TextColor3 = Color3.fromRGB(220, 220, 220)
+transSlider.BackgroundColor3 = Color3.fromRGB(50, 20, 65)
+transSlider.BorderSizePixel = 0
+transSlider.Font = Enum.Font.SourceSansBold
+transSlider.TextSize = 16
+transSlider.Parent = contentContainer
+local transCorner = Instance.new("UICorner")
+transCorner.CornerRadius = UDim.new(0, 4)
+transCorner.Parent = transSlider
+
+local transMinus = Instance.new("TextButton")
+transMinus.Size = UDim2.new(0.25, 0, 0, 25)
+transMinus.Position = UDim2.new(0.75, 0, 0, 150)
+transMinus.Text = "➖"
+transMinus.TextColor3 = Color3.fromRGB(220, 220, 220)
+transMinus.BackgroundColor3 = Color3.fromRGB(50, 20, 65)
+transMinus.BorderSizePixel = 0
+transMinus.Font = Enum.Font.SourceSansBold
+transMinus.TextSize = 16
+transMinus.Parent = contentContainer
+local transMinusCorner = Instance.new("UICorner")
+transMinusCorner.CornerRadius = UDim.new(0, 4)
+transMinusCorner.Parent = transMinus
+
+-- Botão Ativar Tudo
+local allOnBtn = Instance.new("TextButton")
+allOnBtn.Size = UDim2.new(0.43, 0, 0, 28)
+allOnBtn.Position = UDim2.new(0.05, 0, 0, 190)
+allOnBtn.Text = "✅ Ativar Tudo"
+allOnBtn.TextColor3 = Color3.fromRGB(220, 220, 220)
+allOnBtn.BackgroundColor3 = Color3.fromRGB(0, 100, 50)
+allOnBtn.BorderSizePixel = 0
+allOnBtn.Font = Enum.Font.SourceSans
+allOnBtn.TextSize = 12
+allOnBtn.Parent = contentContainer
+local allOnCorner = Instance.new("UICorner")
+allOnCorner.CornerRadius = UDim.new(0, 4)
+allOnCorner.Parent = allOnBtn
+
+local allOffBtn = Instance.new("TextButton")
+allOffBtn.Size = UDim2.new(0.43, 0, 0, 28)
+allOffBtn.Position = UDim2.new(0.52, 0, 0, 190)
+allOffBtn.Text = "❌ Desativar Tudo"
+allOffBtn.TextColor3 = Color3.fromRGB(220, 220, 220)
+allOffBtn.BackgroundColor3 = Color3.fromRGB(100, 0, 0)
+allOffBtn.BorderSizePixel = 0
+allOffBtn.Font = Enum.Font.SourceSans
+allOffBtn.TextSize = 12
+allOffBtn.Parent = contentContainer
+local allOffCorner = Instance.new("UICorner")
+allOffCorner.CornerRadius = UDim.new(0, 4)
+allOffCorner.Parent = allOffBtn
+
+-- Label de debug
+local debugLabel = Instance.new("TextLabel")
+debugLabel.Size = UDim2.new(0.9, 0, 0, 50)
+debugLabel.Position = UDim2.new(0.05, 0, 0, 230)
+debugLabel.Text = "🔥 PVP | UNIVERSAL 🔫"
+debugLabel.TextColor3 = Color3.fromRGB(200, 150, 220)
+debugLabel.BackgroundTransparency = 1
+debugLabel.Font = Enum.Font.SourceSans
+debugLabel.TextSize = 11
+debugLabel.TextWrapped = true
+debugLabel.Parent = contentContainer
+
+-- Variáveis
+local espActive = false
+local hitboxActive = false
+local headSize = 1.0
+local headTransparency = 0
+local highlightColor = Color3.fromRGB(255, 0, 0)
+local colorIndex = 1
+
+local espConnections = {}
+local hitboxConnection = nil
+local originalHeadSizes = {}
+local originalHeadColors = {}
+
+-- Cores disponíveis para o Highlight
+local colors = {
+    {name = "🔴 Vermelho", color = Color3.fromRGB(255, 0, 0)},
+    {name = "🟢 Verde", color = Color3.fromRGB(0, 255, 0)},
+    {name = "🔵 Azul", color = Color3.fromRGB(0, 0, 255)},
+    {name = "🟡 Amarelo", color = Color3.fromRGB(255, 255, 0)},
+    {name = "🟣 Roxo", color = Color3.fromRGB(200, 0, 255)},
+    {name = "🟠 Laranja", color = Color3.fromRGB(255, 165, 0)},
+    {name = "⚪ Branco", color = Color3.fromRGB(255, 255, 255)},
+    {name = "💗 Rosa", color = Color3.fromRGB(255, 100, 200)},
+    {name = "🩵 Ciano", color = Color3.fromRGB(0, 255, 255)}
+}
+
+-- ===================== ESP COM HIGHLIGHTS =====================
+
+local function updateHighlight(otherPlayer)
+    if not espActive then return end
+    if otherPlayer == player then return end
+    
+    local character = otherPlayer.Character
+    if not character then return end
+    
+    local humanoid = character:FindFirstChild("Humanoid")
+    if not humanoid or humanoid.Health <= 0 then return end
+    
+    local highlight = character:FindFirstChild("ESP_Highlight")
+    if not highlight then
+        highlight = Instance.new("Highlight")
+        highlight.Name = "ESP_Highlight"
+        highlight.Parent = character
+        highlight.Adornee = character
+        highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+        highlight.FillTransparency = 0.5
+        highlight.OutlineTransparency = 0
+        highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+    end
+    
+    highlight.FillColor = highlightColor
+end
+
+local function removeHighlight(otherPlayer)
+    local character = otherPlayer.Character
+    if character then
+        local highlight = character:FindFirstChild("ESP_Highlight")
+        if highlight then
+            highlight:Destroy()
+        end
+    end
+end
+
+local function updateAllHighlights()
+    if not espActive then return end
+    
+    for _, otherPlayer in ipairs(Players:GetPlayers()) do
+        if otherPlayer ~= player then
+            updateHighlight(otherPlayer)
+        end
+    end
+end
+
+local function removeAllHighlights()
+    for _, otherPlayer in ipairs(Players:GetPlayers()) do
+        if otherPlayer ~= player then
+            removeHighlight(otherPlayer)
+        end
+    end
+end
+
+local function toggleESP(state)
+    espActive = state
+    
+    for _, conn in ipairs(espConnections) do
+        pcall(conn.Disconnect, conn)
+    end
+    espConnections = {}
+    
+    if state then
+        updateAllHighlights()
+        
+        local conn1 = Players.PlayerAdded:Connect(function(otherPlayer)
+            if otherPlayer ~= player then
+                otherPlayer.CharacterAdded:Connect(function(character)
+                    wait(0.5)
+                    if espActive then
+                        updateHighlight(otherPlayer)
+                    end
+                end)
+                if otherPlayer.Character then
+                    updateHighlight(otherPlayer)
+                end
+            end
+        end)
+        table.insert(espConnections, conn1)
+        
+        local conn2 = Players.PlayerRemoving:Connect(function(otherPlayer)
+            removeHighlight(otherPlayer)
+        end)
+        table.insert(espConnections, conn2)
+        
+        local conn3 = runService.Heartbeat:Connect(function()
+            if espActive then
+                for _, otherPlayer in ipairs(Players:GetPlayers()) do
+                    if otherPlayer ~= player then
+                        local character = otherPlayer.Character
+                        if character then
+                            local highlight = character:FindFirstChild("ESP_Highlight")
+                            if not highlight then
+                                updateHighlight(otherPlayer)
+                            end
+                        end
+                    end
+                end
+            end
+        end)
+        table.insert(espConnections, conn3)
+        
+        debugLabel.Text = "👁️ ESP ativado! | Cor: " .. colors[colorIndex].name
+        debugLabel.TextColor3 = highlightColor
+    else
+        removeAllHighlights()
+        debugLabel.Text = "👁️ ESP desativado"
+        debugLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
+    end
+end
+
+-- ===================== HITBOX EXPANDER =====================
+
+local function applyHeadMods(character)
+    if not character then return end
+    if character == player.Character then return end
+    
+    local head = character:FindFirstChild("Head")
+    if not head then return end
+    
+    if not originalHeadSizes[character] then
+        originalHeadSizes[character] = head.Size
+    end
+    
+    if originalHeadColors[character] == nil then
+        originalHeadColors[character] = head.Transparency
+    end
+    
+    if hitboxActive then
+        local originalSize = originalHeadSizes[character]
+        if originalSize then
+            head.Size = Vector3.new(
+                originalSize.X * headSize,
+                originalSize.Y * headSize,
+                originalSize.Z * headSize
+            )
+        end
+        head.Transparency = headTransparency
+    end
+end
+
+local function restoreHead(character)
+    if not character then return end
+    if character == player.Character then return end
+    
+    local head = character:FindFirstChild("Head")
+    if not head then return end
+    
+    if originalHeadSizes[character] then
+        head.Size = originalHeadSizes[character]
+        originalHeadSizes[character] = nil
+    end
+    
+    if originalHeadColors[character] ~= nil then
+        head.Transparency = originalHeadColors[character]
+        originalHeadColors[character] = nil
+    end
+end
+
+local function applyToAllEnemies()
+    for _, otherPlayer in ipairs(Players:GetPlayers()) do
+        if otherPlayer ~= player then
+            local character = otherPlayer.Character
+            if character then
+                applyHeadMods(character)
+            end
+        end
+    end
+end
+
+local function restoreAllEnemies()
+    for _, otherPlayer in ipairs(Players:GetPlayers()) do
+        if otherPlayer ~= player then
+            local character = otherPlayer.Character
+            if character then
+                restoreHead(character)
+            end
+        end
+    end
+end
+
+local function toggleHitbox(state)
+    hitboxActive = state
+    
+    if hitboxConnection then
+        hitboxConnection:Disconnect()
+        hitboxConnection = nil
+    end
+    
+    if state then
+        applyToAllEnemies()
+        hitboxConnection = runService.Heartbeat:Connect(applyToAllEnemies)
+        
+        Players.PlayerAdded:Connect(function(otherPlayer)
+            if otherPlayer ~= player then
+                otherPlayer.CharacterAdded:Connect(function(character)
+                    if hitboxActive then
+                        applyHeadMods(character)
+                    end
+                end)
+            end
+        end)
+        
+        debugLabel.Text = "🎯 Hitbox ativada! Tamanho: " .. string.format("%.1f", headSize) .. "x | Transp: " .. math.floor(headTransparency * 100) .. "%"
+        debugLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
+    else
+        restoreAllEnemies()
+        debugLabel.Text = "🎯 Hitbox desativada"
+        debugLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
+    end
+end
+
+local function updateHeadSize(newSize)
+    headSize = math.max(0.5, math.min(5, newSize))
+    sizeLabel.Text = "Tamanho: " .. string.format("%.1f", headSize) .. "x"
+    if hitboxActive then
+        applyToAllEnemies()
+        debugLabel.Text = "🎯 Tamanho: " .. string.format("%.1f", headSize) .. "x | Transp: " .. math.floor(headTransparency * 100) .. "%"
+        debugLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
+    end
+end
+
+local function updateTransparency(newTrans)
+    headTransparency = math.max(0, math.min(1, newTrans))
+    transLabel.Text = "Transparência: " .. math.floor(headTransparency * 100) .. "%"
+    if hitboxActive then
+        applyToAllEnemies()
+        debugLabel.Text = "🎯 Tamanho: " .. string.format("%.1f", headSize) .. "x | Transp: " .. math.floor(headTransparency * 100) .. "%"
+        debugLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
+    end
+end
+
+local function changeColor()
+    colorIndex = colorIndex + 1
+    if colorIndex > #colors then colorIndex = 1 end
+    
+    highlightColor = colors[colorIndex].color
+    colorLabel.Text = "Cor ESP: " .. colors[colorIndex].name
+    
+    if espActive then
+        for _, otherPlayer in ipairs(Players:GetPlayers()) do
+            if otherPlayer ~= player then
+                local character = otherPlayer.Character
+                if character then
+                    local highlight = character:FindFirstChild("ESP_Highlight")
+                    if highlight then
+                        highlight.FillColor = highlightColor
+                    end
+                end
+            end
+        end
+        debugLabel.Text = "🎨 Cor alterada para: " .. colors[colorIndex].name
+        debugLabel.TextColor3 = highlightColor
+    end
+end
+
+-- ===================== BOTÕES =====================
+
+espToggle.MouseButton1Click:Connect(function()
+    espActive = not espActive
+    espToggle.Text = espActive and "✅ ESP: ON" or "❌ ESP: OFF"
+    espToggle.BackgroundColor3 = espActive and Color3.fromRGB(0, 120, 60) or Color3.fromRGB(50, 20, 65)
+    toggleESP(espActive)
+end)
+
+hitboxToggle.MouseButton1Click:Connect(function()
+    hitboxActive = not hitboxActive
+    hitboxToggle.Text = hitboxActive and "🎯 Hitbox Expander: ON" or "🎯 Hitbox Expander: OFF"
+    hitboxToggle.BackgroundColor3 = hitboxActive and Color3.fromRGB(0, 120, 60) or Color3.fromRGB(50, 20, 65)
+    toggleHitbox(hitboxActive)
+end)
+
+colorBtn.MouseButton1Click:Connect(function()
+    changeColor()
+end)
+
+sizeSlider.MouseButton1Click:Connect(function()
+    updateHeadSize(headSize + 0.5)
+end)
+
+sizeMinus.MouseButton1Click:Connect(function()
+    updateHeadSize(headSize - 0.5)
+end)
+
+transSlider.MouseButton1Click:Connect(function()
+    updateTransparency(headTransparency + 0.1)
+end)
+
+transMinus.MouseButton1Click:Connect(function()
+    updateTransparency(headTransparency - 0.1)
+end)
+
+allOnBtn.MouseButton1Click:Connect(function()
+    if not espActive then
+        espActive = true
+        espToggle.Text = "✅ ESP: ON"
+        espToggle.BackgroundColor3 = Color3.fromRGB(0, 120, 60)
+        toggleESP(true)
+    end
+    if not hitboxActive then
+        hitboxActive = true
+        hitboxToggle.Text = "🎯 Hitbox Expander: ON"
+        hitboxToggle.BackgroundColor3 = Color3.fromRGB(0, 120, 60)
+        toggleHitbox(true)
+    end
+end)
+
+allOffBtn.MouseButton1Click:Connect(function()
+    if espActive then
+        espActive = false
+        espToggle.Text = "❌ ESP: OFF"
+        espToggle.BackgroundColor3 = Color3.fromRGB(50, 20, 65)
+        toggleESP(false)
+    end
+    if hitboxActive then
+        hitboxActive = false
+        hitboxToggle.Text = "🎯 Hitbox Expander: OFF"
+        hitboxToggle.BackgroundColor3 = Color3.fromRGB(50, 20, 65)
+        toggleHitbox(false)
+    end
+end)
+
+-- Minimizar
+local minimized = false
+minimizeBtn.MouseButton1Click:Connect(function()
+    minimized = not minimized
+    contentContainer.Visible = not minimized
+    minimizeBtn.Text = minimized and "□" or "─"
+    if minimized then
+        menuFrame.Size = UDim2.new(0, 340, 0, 35)
+    else
+        menuFrame.Size = UDim2.new(0, 340, 0, 370)
+    end
+end)
+
+-- Fechar
+closeBtn.MouseButton1Click:Connect(function()
+    screenGui.Enabled = false
+end)
+
+-- ===================== ATALHOS =====================
+
+userInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    
+    if input.KeyCode == Enum.KeyCode.E then
+        espActive = not espActive
+        espToggle.Text = espActive and "✅ ESP: ON" or "❌ ESP: OFF"
+        espToggle.BackgroundColor3 = espActive and Color3.fromRGB(0, 120, 60) or Color3.fromRGB(50, 20, 65)
+        toggleESP(espActive)
+    end
+    
+    if input.KeyCode == Enum.KeyCode.H then
+        hitboxActive = not hitboxActive
+        hitboxToggle.Text = hitboxActive and "🎯 Hitbox Expander: ON" or "🎯 Hitbox Expander: OFF"
+        hitboxToggle.BackgroundColor3 = hitboxActive and Color3.fromRGB(0, 120, 60) or Color3.fromRGB(50, 20, 65)
+        toggleHitbox(hitboxActive)
+    end
+    
+    if input.KeyCode == Enum.KeyCode.V then
+        screenGui.Enabled = not screenGui.Enabled
+    end
+    
+    if input.KeyCode == Enum.KeyCode.C then
+        changeColor()
+    end
+end)
+
+print("🔥 PVP | UNIVERSAL 🔫")
+print("by: Sayzzz Scripts")
+print("🔘 E = ESP | H = Hitbox | V = Menu | C = Cor")
